@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Upload Konten</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            overflow-x: hidden; /* Hindari scroll horizontal */
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            position: relative; /* Untuk posisi partikel */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            animation: fadeIn 1s ease-in-out; /* Animasi fadeIn */
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #555;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background: #fff;
+            transition: transform 0.3s ease-in-out; /* Animasi hover */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        input[type="file"]:focus,
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* Button Styling */
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Particle Styling */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Di belakang konten */
+        }
+
+        /* Animasi FadeIn */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Library Specific Styles (Examples) */
+        /* (You might need to add specific styles for each library) */
+        .toast {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* GSAP Animations (Initialized in JS) */
+    </style>
+    <!-- Library CDN Links -->
+    <!-- 1. SweetAlert2 (Pop-up Alerts) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+
+    <!-- 2. Animate.css (More Animations) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- 3. Toastr (Notifications) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- 4. Select2 (Enhanced Select Boxes) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- 5. Inputmask (Input Formatting) -->
+    <script src="https://rawgit.com/RobinHerbots/Inputmask/5.x/dist/jquery.inputmask.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <div id="particles-js"></div> <!-- Wadah Partikel -->
+
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <div class="card" id="uploadCard">
+            <h2 class="card-title">Upload Konten</h2>
+
+            <div class="form-group">
+                <label for="fotoInput">Pilih Foto:</label>
+                <input type="file" id="fotoInput" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="fileInput">Pilih File:</label>
+                <input type="file" id="fileInput">
+            </div>
+
+            <div class="form-group">
+                <label for="linkInput">URL:</label>
+                <input type="text" id="linkInput" placeholder="Masukkan URL">
+            </div>
+
+            <button class="btn" id="simpanButton">Simpan</button>
+        </div>
+    </div>
+
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <!-- particles.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- Library Script Tags -->
+    <!-- 1. SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+    <!-- 2. (Animate.css is CSS-only, no script needed) -->
+
+    <!-- 3. Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- 4. Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- 5. Inputmask -->
+    <script src="https://rawgit.com/RobinHerbots/Inputmask/5.x/dist/jquery.inputmask.js"></script>
+
+    <script>
+        // Initialize particles.js (Copy settings from index.html or customize)
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#3498db'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    },
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#3498db',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true,
+            config_demo: {
+                hide_card: false,
+                background_color: '#b61924',
+                background_image: '',
+                opacity: 0.8,
+                particles_count: 80,
+
+            }
+        });
+
+        // GSAP Animations
+        gsap.from("#uploadCard", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+
+        // Admin Logic
+        if (document.getElementById('simpanButton')) {
+            const fotoInput = document.getElementById('fotoInput');
+            const fileInput = document.getElementById('fileInput');
+            const linkInput = document.getElementById('linkInput');
+            const simpanButton = document.getElementById('simpanButton');
+
+            simpanButton.addEventListener('click', function() {
+                // Upload Foto
+                if (fotoInput.files.length > 0) {
+                    const fotoFile = fotoInput.files[0];
+                    const fotoReader = new FileReader();
+
+                    fotoReader.onload = function(e) {
+                        localStorage.setItem('fotoData', e.target.result);
+                    }
+                    fotoReader.readAsDataURL(fotoFile);
+                }
+
+                // Upload File
+                if (fileInput.files.length > 0) {
+                    const fileFile = fileInput.files[0];
+                    const fileReader = new FileReader();
+
+                    fileReader.onload = function(e) {
+                        localStorage.setItem('fileData', e.target.result);
+                        localStorage.setItem('fileName', fileFile.name);
+                    }
+                    fileReader.readAsDataURL(fileFile);
+                }
+
+                // Upload Link
+                const linkValue = linkInput.value;
+                localStorage.setItem('linkData', linkValue);
+
+                // SweetAlert2 for confirmation
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Data berhasil disimpan.',
+                    icon: 'success',
+                    confirmButtonText: 'Oke'
+                });
+
+                // Toastr notification
+                toastr.success('Konten berhasil diunggah!', 'Sukses');
+
+            });
+        }
+
+        $(document).ready(function() {
+            // Select2 Initialization (if needed, on a select element)
+            //$("#mySelect").select2();
+
+            // Inputmask Initialization
+            //$("#phoneNumber").inputmask({"mask": "(999) 999-9999"}); // Example
+        });
+    </script>
+</body>
+</html>
