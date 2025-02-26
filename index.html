@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tampilan Konten</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            overflow-x: hidden; /* Hindari scroll horizontal */
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            position: relative; /* Untuk posisi partikel */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            animation: fadeIn 1s ease-in-out; /* Animasi fadeIn */
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #555;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background: #fff;
+            transition: transform 0.3s ease-in-out; /* Animasi hover */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* Image Styling */
+        #fotoContainer img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #fotoContainer img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Button Styling */
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Iframe Styling */
+        #linkPreview {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        /* Particle Styling */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Di belakang konten */
+        }
+
+        /* Animasi FadeIn */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GSAP Animations (Initialized in JS) */
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div> <!-- Wadah Partikel -->
+
+    <div class="container">
+        <h1>Konten Terbaru</h1>
+
+        <div class="card" id="fotoCard">
+            <h2 class="card-title">Foto</h2>
+            <div id="fotoContainer">
+                <!-- Foto akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <div class="card" id="fileCard">
+            <h2 class="card-title">File</h2>
+            <div id="fileContainer">
+                <!-- File akan ditampilkan di sini (sebagai link download) -->
+            </div>
+        </div>
+
+        <div class="card" id="linkCard">
+            <h2 class="card-title">Link</h2>
+            <div id="linkContainer">
+                <!-- Link akan ditampilkan di sini -->
+                <iframe id="linkPreview" style="display: none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <!-- particles.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <script>
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#3498db'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    },
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#3498db',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true,
+            config_demo: {
+                hide_card: false,
+                background_color: '#b61924',
+                background_image: '',
+                opacity: 0.8,
+                particles_count: 80,
+
+            }
+        });
+
+        // GSAP Animations
+        gsap.from("#fotoCard", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+        gsap.from("#fileCard", { opacity: 0, y: 50, duration: 1, delay: 0.7 });
+        gsap.from("#linkCard", { opacity: 0, y: 50, duration: 1, delay: 0.9 });
+
+        // index.html Logic
+        if (document.getElementById('fotoContainer')) {
+            const fotoContainer = document.getElementById('fotoContainer');
+            const fileContainer = document.getElementById('fileContainer');
+            const linkContainer = document.getElementById('linkContainer');
+            const linkPreview = document.getElementById('linkPreview');
+
+            // Load Foto
+            const savedFoto = localStorage.getItem('fotoData');
+            if (savedFoto) {
+                const img = document.createElement('img');
+                img.src = savedFoto;
+                fotoContainer.appendChild(img);
+            }
+
+            // Load File
+            const savedFileData = localStorage.getItem('fileData');
+            const savedFileName = localStorage.getItem('fileName');
+            if (savedFileData && savedFileName) {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = savedFileData;
+                downloadLink.download = savedFileName;
+                downloadLink.textContent = 'Unduh ' + savedFileName;
+                downloadLink.className = 'btn'; // Gaya tombol
+                fileContainer.appendChild(downloadLink);
+            }
+
+            // Load Link
+            const savedLink = localStorage.getItem('linkData');
+            if (savedLink) {
+                const linkWrapper = document.createElement('div'); // Wadah untuk link dan tombol
+                const linkText = document.createElement('a');
+                linkText.href = savedLink;
+                linkText.textContent = savedLink;
+                linkText.target = "_blank"; // Buka di tab baru
+                linkWrapper.appendChild(linkText);
+
+                const tryButton = document.createElement('button');
+                tryButton.textContent = 'Try';
+                tryButton.className = 'btn'; // Gaya tombol
+
+                tryButton.addEventListener('click', function() {
+                    linkPreview.src = savedLink;
+                    linkPreview.style.display = 'block'; // Tampilkan iframe
+                });
+
+                linkWrapper.appendChild(tryButton);
+                linkContainer.appendChild(linkWrapper);
+            }
+        }
+    </script>
+</body>
+</html>
